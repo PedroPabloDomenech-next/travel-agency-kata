@@ -47,6 +47,13 @@ Then, you can run your docker build command. You must run it on root folde:
 
 ```docker build -t <app-name> .```
 
+Then you can run your docker image:
+
+```docker run -p 8080:8080 <app-name>```
+
+Or deploy in a K8 environment. The application port is 8080
+
+You can verify your app is up in the url [http://localhost:8080/swagger-ui/index.html]()
 
 
   
