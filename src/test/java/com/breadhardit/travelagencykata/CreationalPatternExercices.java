@@ -5,6 +5,11 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+/*
+patrones a aprender creacionales: singleton, factory, builder
+comportamiento: command, strategy, observer
+estructurales: composite, adapter, facade
+ */
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
