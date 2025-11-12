@@ -8,6 +8,7 @@ import com.breadhardit.travelagencykata.infrastructure.rest.dto.GetCustomerDTO;
 import com.breadhardit.travelagencykata.infrastructure.rest.dto.PutCustomerDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@Profile("inMemory")
 public class CustomersController {
 
     final CustomersRepository customersRepository;

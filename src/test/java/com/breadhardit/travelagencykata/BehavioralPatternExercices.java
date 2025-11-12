@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -82,6 +83,27 @@ public class BehavioralPatternExercices {
             return EMPLOYEES.values().stream().filter(e -> !e.greetingDone).toList();
         }
     }
+
+    public interface NotificationObserver{
+        void greeting();
+        void addNewEmployee(Employee employee);
+    }
+    public static class GreetingNotificationObserver implements NotificationObserver{
+        EmployeesRepository employeesRepository;
+
+        @Override
+        public void greeting() {
+            List<Employee> employeesToNotify = employeesRepository.getUnnotifiedEmployees();
+            employeesToNotify.forEach(employee -> employee.setGreetingDone(Boolean.TRUE));
+        }
+
+        @Override
+        public void addNewEmployee(Employee employee) {
+            employeesRepository.addEmployee(employee);
+            greeting();
+        }
+    }
+
     @Value
     @AllArgsConstructor
     public static class GreetingsNotificator {
