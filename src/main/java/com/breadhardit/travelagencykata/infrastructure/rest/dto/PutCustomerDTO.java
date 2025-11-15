@@ -13,4 +13,24 @@ public class PutCustomerDTO {
     LocalDate birthDate;
     String passportNumber;
     Boolean active;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurnames() {
+        return surnames;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public String getPassportNumber() {
+        return passportNumber;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
 }
