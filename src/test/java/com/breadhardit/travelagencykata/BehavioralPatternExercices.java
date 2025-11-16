@@ -4,7 +4,9 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,23 +19,20 @@ public class BehavioralPatternExercices {
     }
 
     @Test
-        // When customer buy a new Travel we have to scan the proper documentation
     void travelAgency() {
         List<Travel> travels = List.of(
-                new Travel(UUID.randomUUID().toString(), "PYRAMIDS TOUR", "Spain", "EGYPT"),
-                new Travel(UUID.randomUUID().toString(), "LISBOA TOUR", "Spain", "Portugal"),
-                new Travel(UUID.randomUUID().toString(), "LISBOA TOUR", "Portugal", "Portugal")
+                TravelFactory.createTravel("Spain", "Spain"),
+                TravelFactory.createTravel("Germany", "Spain"),
+                TravelFactory.createTravel("United States", "Australia")
         );
-        for (Travel travel : travels) {
-            if (travel.visaRequiredTravel) scanVisa();
-            else if (travel.schengenSpaceTravel) scanPassport();
-            else if (travel.sameCountryTravel) scanDNI();
-        }
+
+        // Functional interface
+        travels.forEach(Travel::scanDocumentation);
     }
 
     @Test
     @SneakyThrows
-    public void companyTest() {
+    void companyTest() {
         EmployeesRepository employeesRepository = new EmployeesRepository();
         GreetingsNotificator greetingsNotificator = new GreetingsNotificator(employeesRepository);
         new Thread(() -> greetingsNotificator.applyNotifications()).start();
@@ -129,44 +128,71 @@ public class BehavioralPatternExercices {
      * A notification service is querying the database every second looking for new employees to notify
      */
 
+    public abstract static class Publisher {
+        List<Subscriber> subscriberList;
+
+        public Publisher() {
+            this.subscriberList = new ArrayList<>();
+        }
+
+        public boolean addSubscriber(Subscriber subscriber) {
+            return subscriberList.add(subscriber);
+        }
+
+        public boolean removeSubscriber(Subscriber subscriber) {
+            return subscriberList.remove(subscriber);
+        }
+
+        public void updateSubscribers() {
+            for (Subscriber subscriber : subscriberList)
+                subscriber.update();
+        }
+    }
+
+    public class NotificationPublisher {
+        private final String content;
+
+        public NotificationPublisher(String content) {
+            this.content = content;
+        }
+    }
+
+    public interface Subscriber {
+        void update();
+    }
+
     @Builder
     @Data
-    public static class Employee {
+    public static class Employee implements Subscriber{
         final String id;
         final String name;
         final String email;
-        @Builder.Default
-        Boolean greetingDone = Boolean.FALSE;
+
+
+        @Override
+        public void update() {
+            log.info("Greeting email received!!!");
+        }
     }
 
     public static class EmployeesRepository {
-        private static final ConcurrentHashMap<String, Employee> EMPLOYEES = new ConcurrentHashMap<>();
+        private static final Map<String, Employee> EMPLOYEES = new ConcurrentHashMap<>();
+        private Publisher publisher;
 
         public void addEmployee(Employee employee) {
             EMPLOYEES.put(employee.getId(), employee);
-        }
-
-        public List<Employee> getUnnotifiedEmployees() {
-            return EMPLOYEES.values().stream().filter(e -> !e.greetingDone).toList();
+            publisher.addSubscriber(employee);
         }
     }
 
     @Value
     @AllArgsConstructor
-    public static class GreetingsNotificator {
+    public static class GreetingsNotificator extends Publisher {
         EmployeesRepository employeesRepository;
 
         @SneakyThrows
         public void applyNotifications() {
-            while (true) {
-                log.info("Aplying notifications");
-                List<Employee> employeesToNotify = employeesRepository.getUnnotifiedEmployees();
-                employeesToNotify.forEach(e -> {
-                    log.info("Notifying {}", e);
-                    e.setGreetingDone(Boolean.TRUE);
-                });
-                Thread.sleep(100);
-            }
+
         }
     }
     // Use the proper behavioral pattern to avoid the continuous querying to database
