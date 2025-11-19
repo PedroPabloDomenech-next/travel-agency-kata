@@ -20,7 +20,6 @@ import java.util.Optional;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Profile("inMemory")
 public class CustomersController {
 
     final CustomersRepository customersRepository;
