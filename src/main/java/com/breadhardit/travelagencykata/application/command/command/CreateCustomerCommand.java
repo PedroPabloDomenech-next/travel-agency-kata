@@ -26,6 +26,9 @@ public class CreateCustomerCommand {
                 .surnames(surnames)
                 .birthDate(birthDate)
                 .passportNumber(passportNumber)
+                // Añadido: no se inicializaban en ningún momento
+                .enrollmentDate(LocalDate.now())
+                .active(true)
                 .build();
         customersRepository.saveCustomer(customer);
         return customer.getId();

@@ -1,5 +1,6 @@
 package com.breadhardit.travelagencykata;
 
+import com.breadhardit.travelagencykata.infrastructure.persistence.repository.CustomersJPARepository;
 import com.breadhardit.travelagencykata.infrastructure.rest.CustomersController;
 import com.breadhardit.travelagencykata.infrastructure.rest.dto.PutCustomerDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,8 @@ import java.util.Objects;
 class TravelAgencyKataApplicationTests {
     @Autowired
     CustomersController customersController;
+    @Autowired
+    private CustomersJPARepository customersJPARepository;
 
     @Test
     void contextLoads() {
@@ -38,6 +41,7 @@ class TravelAgencyKataApplicationTests {
                         .passportNumber("123")
                         .build()
         );
+
         // Assert the response is OK
         Assertions.assertEquals(HttpStatus.CREATED, putCustomerResponse.getStatusCode());
         // Assert response has location header
@@ -54,6 +58,7 @@ class TravelAgencyKataApplicationTests {
         Assertions.assertEquals(HttpStatus.OK, getCustomerByPassportResponse.getStatusCode());
         Assertions.assertTrue(getCustomerByPassportResponse.hasBody());
     }
+
     @Test
     void givenNonExistingUserThen404() {
         var getCustomerResponse = customersController.getCustomer("POTATO");

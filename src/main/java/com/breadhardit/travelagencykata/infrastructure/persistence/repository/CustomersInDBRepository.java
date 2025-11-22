@@ -3,11 +3,10 @@ package com.breadhardit.travelagencykata.infrastructure.persistence.repository;
 import com.breadhardit.travelagencykata.application.port.CustomersRepository;
 import com.breadhardit.travelagencykata.domain.Customer;
 import com.breadhardit.travelagencykata.infrastructure.persistence.entity.CustomerEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 // Copio las mismas etiquetas que tenía CustomersInMemoryRepository.java
@@ -41,8 +40,8 @@ public class CustomersInDBRepository implements CustomersRepository {
     }
 
     @Override
-    public Optional<Customer> getCustomerByPassport(String id) {
-        return this.customersJPARepository.findByPassportNumber(id).map(this::toDomain);
+    public Optional<Customer> getCustomerByPassport(String passport) {
+        return this.customersJPARepository.findByPassportNumber(passport).map(this::toDomain);
     }
 
     public CustomerEntity toEntity(Customer customer){
@@ -62,8 +61,9 @@ public class CustomersInDBRepository implements CustomersRepository {
                 .surnames(entity.getSurnames())
                 .birthDate(entity.getBirthDate())
                 .passportNumber(entity.getPassportNumber())
-                .enrollmentDate(entity.getEnrollmentDate())
-                .active(entity.getActive())
+                .enrollmentDate((entity.getEnrollmentDate() == null) ? LocalDate.now() : entity.getEnrollmentDate())
+                // Más simplificado que con un condicional ternario
+                .active(entity.getActive() == null || entity.getActive())
                 .build();
     }
 
