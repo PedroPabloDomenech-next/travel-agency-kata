@@ -22,8 +22,8 @@ class TravelAgencyKataApplicationTests {
     @Autowired
     CustomersController customersController;
     @BeforeEach
-    public void beforeEach() {
-
+    void beforeEach() {
+        // Vacío
     }
     @Test
     void contextLoads() {
