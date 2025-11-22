@@ -3,6 +3,8 @@ package com.breadhardit.travelagencykata.infrastructure.persistence.repository;
 import com.breadhardit.travelagencykata.application.port.CustomersRepository;
 import com.breadhardit.travelagencykata.domain.Customer;
 import com.breadhardit.travelagencykata.infrastructure.persistence.entity.CustomerEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -10,10 +12,23 @@ import java.util.Optional;
 
 // Copio las mismas etiquetas que tenía CustomersInMemoryRepository.java
 @Repository
-@Scope("singleton")
+
+// Los Beans son singleton por defecto: me ahorro la etiqueta
+
+// Necesaria cuando hay varias clases implementando el puerto, y por tanto candidatas a usarse en CustomerController:
+@Primary
+
+
+
 public class CustomersInDBRepository implements CustomersRepository {
 
     CustomersJPARepository customersJPARepository;
+
+    // Constructor con inyección, mejor que @Autowired según SonarQube
+    public CustomersInDBRepository(CustomersJPARepository customersJPARepository) {
+        this.customersJPARepository = customersJPARepository;
+    }
+
 
     @Override
     public void saveCustomer(Customer customer) {
@@ -27,7 +42,7 @@ public class CustomersInDBRepository implements CustomersRepository {
 
     @Override
     public Optional<Customer> getCustomerByPassport(String id) {
-        return this.customersJPARepository.findByPassport(id).map(this::toDomain);
+        return this.customersJPARepository.findByPassportNumber(id).map(this::toDomain);
     }
 
     public CustomerEntity toEntity(Customer customer){

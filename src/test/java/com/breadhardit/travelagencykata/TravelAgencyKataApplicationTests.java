@@ -21,10 +21,7 @@ import java.util.Objects;
 class TravelAgencyKataApplicationTests {
     @Autowired
     CustomersController customersController;
-    @BeforeEach
-    void beforeEach() {
-        // Vacío
-    }
+
     @Test
     void contextLoads() {
         log.info("Context Loaded");
@@ -34,7 +31,12 @@ class TravelAgencyKataApplicationTests {
     void givenAUserWhenCreatedThenOK() {
         // Creates a new customer using the controller method
         var putCustomerResponse = customersController.putCustomer(
-                PutCustomerDTO.builder().name("Pepe").surnames("Perez").birthDate(LocalDate.now()).passportNumber("123").build()
+                PutCustomerDTO.builder()
+                        .name("Pepe")
+                        .surnames("Perez")
+                        .birthDate(LocalDate.of(1980, 1, 1))
+                        .passportNumber("123")
+                        .build()
         );
         // Assert the response is OK
         Assertions.assertEquals(HttpStatus.CREATED, putCustomerResponse.getStatusCode());

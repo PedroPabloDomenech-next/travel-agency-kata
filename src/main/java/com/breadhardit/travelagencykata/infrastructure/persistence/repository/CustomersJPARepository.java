@@ -14,5 +14,5 @@ import java.util.Optional;
 public interface CustomersJPARepository extends JpaRepository<CustomerEntity,String> {
     // getReferenceById viene dado por la interfaz
 
-    Optional<CustomerEntity> findByPassport(String passportNumber);
+    Optional<CustomerEntity> findByPassportNumber(String passportNumber);
 }
