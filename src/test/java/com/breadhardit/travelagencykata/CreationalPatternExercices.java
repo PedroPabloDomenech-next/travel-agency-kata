@@ -20,7 +20,6 @@ class CreationalPatternExercices {
      */
 
     @Data
-    @Builder
     /*
      Las clases abstractas se consideran incompletas por defecto; puede implementar la interfaz sin definir todos
      sus métodos, siempre y cuando sus clases hijas sí lo hagan. Por tanto, solo implementa el getId() y delega la
