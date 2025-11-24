@@ -28,13 +28,13 @@ public class CustomerMapper {
                .enrollmentDate(customer.getEnrollmentDate())
                .active(customer.getActive()).build();
 
-        if(customerEntity.getEnrollmentDate() == null){
+       if(customerEntity.getEnrollmentDate() == null){
             customerEntity.setEnrollmentDate(LocalDate.now());
-        }
-        if(customerEntity.getActive() == null){
+       }
+       if(customerEntity.getActive() == null){
             customerEntity.setActive(true);
-        }
-        return customerEntity;
+       }
+       return customerEntity;
     }
 
 }
