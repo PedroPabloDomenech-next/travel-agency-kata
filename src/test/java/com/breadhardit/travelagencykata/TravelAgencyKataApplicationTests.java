@@ -78,7 +78,7 @@ class TravelAgencyKataApplicationTests {
     }
 
     @Test
-    void givenNonExistingUserThen404() {
+    void givenNonExistingUserThen204() {
         var getCustomerResponse = customersController.getCustomer("POTATO");
         Assertions.assertEquals(HttpStatus.NO_CONTENT, getCustomerResponse.getStatusCode());
     }
