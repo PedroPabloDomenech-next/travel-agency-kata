@@ -1,14 +1,13 @@
 package com.breadhardit.travelagencykata;
 
-import com.breadhardit.travelagencykata.domain.Customer;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class BehavioralPatternExercices {
@@ -80,6 +79,26 @@ public class BehavioralPatternExercices {
         }
         public List<Employee> getUnnotifiedEmployees() {
             return EMPLOYEES.values().stream().filter(e -> !e.greetingDone).toList();
+        }
+    }
+
+    public interface NotificationObserver {
+        void greeting();
+        void addNewEmployee(Employee employee);
+    }
+
+    public static class GreetingNotificationObserver implements NotificationObserver {
+        List<Employee> employeeToGreet = new ArrayList<>();
+
+        @Override
+        public void greeting() {
+            employeeToGreet.forEach(e -> e.setGreetingDone(Boolean.TRUE));
+        }
+
+        @Override
+        public void addNewEmployee(Employee employee) {
+            employeeToGreet.add(employee);
+            greeting();
         }
     }
     @Value
