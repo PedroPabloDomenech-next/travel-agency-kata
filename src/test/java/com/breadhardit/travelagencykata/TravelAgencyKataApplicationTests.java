@@ -22,15 +22,14 @@ import java.util.Objects;
 class TravelAgencyKataApplicationTests {
     @Autowired
     CustomersController customersController;
-    @BeforeEach
-    public void beforeEach() {
 
-    }
+    @BeforeEach
+    public void beforeEach() {}
+
     @Test
     void contextLoads() {
         log.info("Context Loaded");
     }
-
 
     // HELPERS
 
@@ -55,38 +54,39 @@ class TravelAgencyKataApplicationTests {
 
     @Test
     // Assert the response is OK
-    void givenAUser_whenCreated_thenStatusCreated() {
-        var response = createCustomer();
-        Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
+    void givenAUserWhenCreatedThenStatusCreated() {
+        var putCustomerResponse = createCustomer();
+        Assertions.assertEquals(HttpStatus.CREATED, putCustomerResponse.getStatusCode());
     }
 
     @Test
     // Assert response has location header
-    void givenAUser_whenCreated_thenLocationHeaderExists() {
-        var response = createCustomer();
-        Assertions.assertTrue(response.getHeaders().containsKey(HttpHeaders.LOCATION));
+    void givenAUserWhenCreatedThenLocationHeaderExists() {
+        var putCustomerResponse = createCustomer();
+        Assertions.assertTrue(putCustomerResponse.getHeaders().containsKey(HttpHeaders.LOCATION));
     }
 
     @Test
     // Call get method
-    void givenAUser_whenCreated_thenGetByIdReturnsOK() {
-        var response = createCustomer();
-        String id = extractId(response);
+    void givenAUserWhenCreatedThenGetByIdReturnsOK() {
+        var putConsumerResponse = createCustomer();
+        String id = extractId(putConsumerResponse);
 
-        var getResponse = customersController.getCustomer(id);
-        Assertions.assertEquals(HttpStatus.OK, getResponse.getStatusCode());
-        Assertions.assertTrue(getResponse.hasBody());
+        var getCustomerResponse = customersController.getCustomer(id);
+        Assertions.assertEquals(HttpStatus.OK, getCustomerResponse.getStatusCode());
+        Assertions.assertTrue(getCustomerResponse.hasBody());
     }
 
     @Test
     // Call get by passport method should return 200 with body
-    void givenAUser_whenCreated_thenGetByPassportReturnsOK() {
-        createCustomer(); // crea usuario con passport "123"
+    void givenAUserWhenCreatedThenGetByPassportReturnsOK() {
+        createCustomer(); // Creates user with passport "123"
 
-        var passportResponse = customersController.getCustomers("123");
-        Assertions.assertEquals(HttpStatus.OK, passportResponse.getStatusCode());
-        Assertions.assertTrue(passportResponse.hasBody());
+        var getCustomerByPassportResponse = customersController.getCustomers("123");
+        Assertions.assertEquals(HttpStatus.OK, getCustomerByPassportResponse.getStatusCode());
+        Assertions.assertTrue(getCustomerByPassportResponse.hasBody());
     }
+
     @Test
     void givenNonExistingUserThen404() {
         var getCustomerResponse = customersController.getCustomer("POTATO");
