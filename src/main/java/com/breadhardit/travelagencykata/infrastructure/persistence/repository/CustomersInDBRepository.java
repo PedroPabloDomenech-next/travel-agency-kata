@@ -17,8 +17,6 @@ import java.util.Optional;
 // Necesaria cuando hay varias clases implementando el puerto, y por tanto candidatas a usarse en CustomerController:
 @Primary
 
-
-
 public class CustomersInDBRepository implements CustomersRepository {
 
     CustomersJPARepository customersJPARepository;
@@ -41,7 +39,7 @@ public class CustomersInDBRepository implements CustomersRepository {
 
     @Override
     public Optional<Customer> getCustomerByPassport(String passport) {
-        return this.customersJPARepository.findByPassportNumber(passport).map(this::toDomain);
+        return this.customersJPARepository.getReferenceByPassportNumber(passport).map(this::toDomain);
     }
 
     public CustomerEntity toEntity(Customer customer){
@@ -50,8 +48,9 @@ public class CustomersInDBRepository implements CustomersRepository {
                 .surnames(customer.getSurnames())
                 .birthDate(customer.getBirthDate())
                 .passportNumber(customer.getPassportNumber())
-                .enrollmentDate(customer.getEnrollmentDate())
-                .active(customer.getActive())
+                .enrollmentDate((customer.getEnrollmentDate() == null) ? LocalDate.now() : customer.getEnrollmentDate())
+                // Más simplificado que con un condicional ternario
+                .active(customer.getActive() == null || customer.getActive())
                 .build();
     }
 
@@ -61,9 +60,8 @@ public class CustomersInDBRepository implements CustomersRepository {
                 .surnames(entity.getSurnames())
                 .birthDate(entity.getBirthDate())
                 .passportNumber(entity.getPassportNumber())
-                .enrollmentDate((entity.getEnrollmentDate() == null) ? LocalDate.now() : entity.getEnrollmentDate())
-                // Más simplificado que con un condicional ternario
-                .active(entity.getActive() == null || entity.getActive())
+                .enrollmentDate(entity.getEnrollmentDate())
+                .active(entity.getActive())
                 .build();
     }
 

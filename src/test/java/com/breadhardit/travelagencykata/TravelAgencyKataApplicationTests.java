@@ -20,19 +20,16 @@ import java.util.Objects;
 @Slf4j
 @DirtiesContext
 class TravelAgencyKataApplicationTests {
+
     @Autowired
     CustomersController customersController;
-    @Autowired
-    private CustomersJPARepository customersJPARepository;
 
-    @Test
-    void contextLoads() {
-        log.info("Context Loaded");
-    }
+    // el @Autowired de customerJPARepository sobra: no se utiliza
 
-    @Test
-    void givenAUserWhenCreatedThenOK() {
-        // Creates a new customer using the controller method
+    private String exampleId;
+
+    @BeforeEach
+    void setUp() {
         var putCustomerResponse = customersController.putCustomer(
                 PutCustomerDTO.builder()
                         .name("Pepe")
@@ -42,18 +39,39 @@ class TravelAgencyKataApplicationTests {
                         .build()
         );
 
-        // Assert the response is OK
-        Assertions.assertEquals(HttpStatus.CREATED, putCustomerResponse.getStatusCode());
-        // Assert response has location header
-        Assertions.assertTrue(putCustomerResponse.getHeaders().containsKey(HttpHeaders.LOCATION));
-        // Assert id exists in repository, first, obtaining the id from the location
         String location = Objects.requireNonNull(putCustomerResponse.getHeaders().getLocation()).getPath();
-        String id = location.substring(location.lastIndexOf("/") + 1);
-        // Call get method
-        var getCustomerResponse = customersController.getCustomer(id);
+        exampleId = location.substring(location.lastIndexOf("/") + 1);
+    }
+
+    @Test
+    void contextLoads() {
+        log.info("Context Loaded");
+    }
+
+    @Test
+    void givenExampleUserWhenPutThenOk() {
+        var putCustomerResponse = customersController.putCustomer(
+                PutCustomerDTO.builder()
+                        .name("Juan")
+                        .surnames("García")
+                        .birthDate(LocalDate.of(1980, 1, 6))
+                        .passportNumber("456")
+                        .build()
+        );
+
+        Assertions.assertEquals(HttpStatus.CREATED, putCustomerResponse.getStatusCode());
+        Assertions.assertTrue(putCustomerResponse.getHeaders().containsKey(HttpHeaders.LOCATION));
+    }
+
+    @Test
+    void givenExampleUserInRepositoryWhenGetByIdThenOk() {
+        var getCustomerResponse = customersController.getCustomer(exampleId);
         Assertions.assertEquals(HttpStatus.OK, getCustomerResponse.getStatusCode());
         Assertions.assertTrue(getCustomerResponse.hasBody());
-        // Call get by passport method should return 200 with body
+    }
+
+    @Test
+    void givenExampleUserInRepositoryWhenGetByNumberPassportThenOk() {
         var getCustomerByPassportResponse = customersController.getCustomers("123");
         Assertions.assertEquals(HttpStatus.OK, getCustomerByPassportResponse.getStatusCode());
         Assertions.assertTrue(getCustomerByPassportResponse.hasBody());
@@ -62,8 +80,6 @@ class TravelAgencyKataApplicationTests {
     @Test
     void givenNonExistingUserThen404() {
         var getCustomerResponse = customersController.getCustomer("POTATO");
-        Assertions.assertEquals(HttpStatus.NO_CONTENT,getCustomerResponse.getStatusCode());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, getCustomerResponse.getStatusCode());
     }
-
-
 }
