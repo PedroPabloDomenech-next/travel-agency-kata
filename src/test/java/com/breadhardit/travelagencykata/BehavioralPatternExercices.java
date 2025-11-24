@@ -82,6 +82,18 @@ public class BehavioralPatternExercices {
             return EMPLOYEES.values().stream().filter(e -> !e.greetingDone).toList();
         }
     }
+    public interface NotificationObserver {
+        void gretings();
+    }
+    public static class GreetingsNotificatorObserver implements NotificationObserver {
+       EmployeesRepository employeesRepository;
+
+        @Override
+        public void gretings() {
+            List<Employee> employeesToNotify = employeesRepository.getUnnotifiedEmployees();
+            employeesToNotify.forEach(e -> e.setGreetingDone(Boolean.TRUE));
+        }
+    }
     @Value
     @AllArgsConstructor
     public static class GreetingsNotificator {

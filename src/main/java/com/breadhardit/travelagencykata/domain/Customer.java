@@ -15,4 +15,11 @@ public class Customer {
     String passportNumber;
     LocalDate enrollmentDate;
     Boolean active;
+
+    public String getId (){
+        return id;
+    }
+    public String getPassportNumber (){
+        return passportNumber;
+    }
 }

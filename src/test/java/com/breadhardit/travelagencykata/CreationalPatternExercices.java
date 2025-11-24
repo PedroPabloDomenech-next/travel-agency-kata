@@ -19,13 +19,23 @@ public class CreationalPatternExercices {
      */
     @Data
     @Builder
-    public static class Movement {
-        public enum MovementType {DEPOSIT,WITHDRAWAL}
+    public interface Movement {
         String id;
         MovementType type;
         Long amount;
         String description;
+        String movemenToRevertId;
     }
+    public enum MovemenType {DEPOSIT,WITHDRAWAL,TRASFER,ANNULMENT}
+    public static Movement createMovement (Movement.MovementType type){
+        switch (type){
+            case DEPOSIT -> new Movement(id,"patata",type,10L,"patatas fritas");
+            case WITHDRAWAL -> new Movement(id, type, 10L, "hamburguesa con tomate");
+            case;
+            case ;
+        }
+    }
+
     @Data
     @RequiredArgsConstructor
     public static class Account {
