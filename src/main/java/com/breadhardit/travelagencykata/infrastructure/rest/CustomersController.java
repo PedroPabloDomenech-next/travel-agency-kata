@@ -65,12 +65,12 @@ public class CustomersController {
                 .build().handle();
         return customer.isEmpty() ? ResponseEntity.noContent().build() :
                 ResponseEntity.ok(
-                  List.of(GetCustomerDTO.builder()
-                          .name(customer.get().getName())
-                          .surnames(customer.get().getSurnames())
-                          .birthDate(customer.get().getBirthDate())
-                          .passportNumber(customer.get().getPassportNumber())
-                          .build())
+                        List.of(GetCustomerDTO.builder()
+                                .name(customer.get().getName())
+                                .surnames(customer.get().getSurnames())
+                                .birthDate(customer.get().getBirthDate())
+                                .passportNumber(customer.get().getPassportNumber())
+                                .build())
                 );
     }
 

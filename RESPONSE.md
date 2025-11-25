@@ -47,4 +47,4 @@
 
 ## CAMBIOS HECHOS A PARTE
 - Separación de tests para facilitar detección de errores
-- Corrección de bug en tests proporcionados
+- Corrección de bug en tests proporcionados (no me ejecuta correctamente dicho test, por lo que asumo que habrá algo incorrecto en la práctica en sí)
