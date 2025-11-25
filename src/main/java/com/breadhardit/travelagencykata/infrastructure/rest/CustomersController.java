@@ -1,10 +1,9 @@
 package com.breadhardit.travelagencykata.infrastructure.rest;
 
-import com.breadhardit.travelagencykata.application.command.command.CreateCustomerCommand;
+import com.breadhardit.travelagencykata.application.command.CreateCustomerCommand;
 import com.breadhardit.travelagencykata.application.command.query.GetCustomerQuery;
 import com.breadhardit.travelagencykata.application.port.CustomersRepository;
 import com.breadhardit.travelagencykata.domain.Customer;
-import com.breadhardit.travelagencykata.infrastructure.persistence.entity.CustomerEntity;
 import com.breadhardit.travelagencykata.infrastructure.rest.dto.GetCustomerDTO;
 import com.breadhardit.travelagencykata.infrastructure.rest.dto.PutCustomerDTO;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController

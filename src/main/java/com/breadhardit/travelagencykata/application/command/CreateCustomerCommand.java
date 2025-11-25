@@ -1,4 +1,4 @@
-package com.breadhardit.travelagencykata.application.command.command;
+package com.breadhardit.travelagencykata.application.command;
 
 import com.breadhardit.travelagencykata.domain.Customer;
 import com.breadhardit.travelagencykata.application.port.CustomersRepository;
