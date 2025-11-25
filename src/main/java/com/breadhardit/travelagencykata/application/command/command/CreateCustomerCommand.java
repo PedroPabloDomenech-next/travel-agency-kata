@@ -1,5 +1,6 @@
 package com.breadhardit.travelagencykata.application.command.command;
 
+import com.breadhardit.travelagencykata.application.command.ICommand;
 import com.breadhardit.travelagencykata.domain.Customer;
 import com.breadhardit.travelagencykata.application.port.CustomersRepository;
 import lombok.Builder;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 @Value
 @Builder
-public class CreateCustomerCommand {
+public class CreateCustomerCommand implements ICommand<String> {
     String id = UUID.randomUUID().toString();
     String name;
     String surnames;

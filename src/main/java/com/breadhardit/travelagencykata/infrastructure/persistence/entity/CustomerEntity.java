@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class CustomerEntity {
     @Id
     @Column(name = "ID")
@@ -32,7 +34,4 @@ public class CustomerEntity {
     @Column(name = "ACTIVE")
     Boolean active;
 
-    public CustomerEntity() {
-
-    }
 }

@@ -1,5 +1,6 @@
 package com.breadhardit.travelagencykata.application.command.query;
 
+import com.breadhardit.travelagencykata.application.command.ICommand;
 import com.breadhardit.travelagencykata.domain.Customer;
 import com.breadhardit.travelagencykata.application.port.CustomersRepository;
 import lombok.Builder;
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 @Value
 @Builder
-public class GetCustomerQuery {
+public class GetCustomerQuery implements ICommand<Optional<Customer>> {
     @Builder.Default
     String passport = "";
     @Builder.Default
