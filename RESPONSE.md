@@ -46,7 +46,7 @@ con el contrato del puerto que usa la aplicación.
 
 # 2. Principios SOLID y Patrones de diseño en el código existente
 
-## 2.1. Identificados
+## 2.1. Principios y patrones dentificados
 
 - **Single Responsability Principle** y **Open-Closed Principle** aplicado mediante patrón **Command** en las clases 
 [CustomerController]() y 
@@ -60,5 +60,12 @@ depende el sistema, que son funcionales y permiten que el sistema dependa de abs
 con el repositorio (a través de [CustomerRepository]()).
 
 
-## 2.2 Aplicados
+## 2.2 Principios violados
 
+Se han encontrado las siguientes violaciones de patrones SOLID:
+- **Open-Closed Principle** en [CustomerController]() y [CreateCustomerQuery](), puesto que el código no permite su 
+  extensión a nuevos parámetros de búsqueda tal y como está actualmente. Esto podría resolverse implementando el 
+  patrón Strategy, y reforzar el **Single Responsability Principle** de la mano del patrón Factory. He intentado 
+  implementar este cambio, pero debido a desconocimiento sobre el uso de los beans en Spring, los endpoints y que el 
+  parámetro se toma de forma distinta según cuál sea, no he sido capaz de implementarlo con éxito. Estaría 
+  encantado de conocer la respuesta.

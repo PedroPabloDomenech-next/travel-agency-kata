@@ -48,12 +48,8 @@ public class CustomersController {
                 .customersRepository(customersRepository)
                 .id(customerId)
                 .build().handle();
-        return customer.map(value -> ResponseEntity.ok(GetCustomerDTO.builder()
-                .name(value.getName())
-                .surnames(value.getSurnames())
-                .birthDate(value.getBirthDate())
-                .passportNumber(value.getPassportNumber())
-                .build())).orElseGet(() -> ResponseEntity.noContent().build());
+        return customer.map(value -> ResponseEntity.ok(toDto(value)))
+                .orElseGet(() -> ResponseEntity.noContent().build());
     }
     @GetMapping("/customers")
     public ResponseEntity<GetCustomerDTO> getCustomers(@RequestParam(name = "passport-number") String passportNumber) {
@@ -62,12 +58,17 @@ public class CustomersController {
                 .customersRepository(customersRepository)
                 .passport(passportNumber)
                 .build().handle();
-        return customer.map(value -> ResponseEntity.ok(GetCustomerDTO.builder()
-                .name(value.getName())
-                .surnames(value.getSurnames())
-                .birthDate(value.getBirthDate())
-                .passportNumber(value.getPassportNumber())
-                .build())).orElseGet(() -> ResponseEntity.noContent().build());
+        return customer.map(value -> ResponseEntity.ok(toDto(value)))
+                .orElseGet(() -> ResponseEntity.noContent().build());
+    }
+
+    private GetCustomerDTO toDto(Customer c) {
+        return GetCustomerDTO.builder()
+                .name(c.getName())
+                .surnames(c.getSurnames())
+                .birthDate(c.getBirthDate())
+                .passportNumber(c.getPassportNumber())
+                .build();
     }
 
 }
