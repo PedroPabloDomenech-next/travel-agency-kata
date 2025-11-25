@@ -16,47 +16,24 @@ import java.util.Optional;
 
 public class RepositoryAdapter implements CustomersRepository {
     private CustomersJPARepository databaseRepository;
+    private CustomerTransformer transformer;
 
     @Override
     public void saveCustomer(Customer customer) {
-        databaseRepository.save(transform(customer));
-    }
-
-    private Customer transform(CustomerEntity entity) {
-        return Customer.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .surnames(entity.getSurnames())
-                .birthDate(entity.getBirthDate())
-                .passportNumber(entity.getPassportNumber())
-                .enrollmentDate((entity.getEnrollmentDate() == null) ? LocalDate.now() : entity.getEnrollmentDate())
-                .active(entity.getActive() == null || entity.getActive())
-                .build();
-    }
-
-    private CustomerEntity transform(Customer customer) {
-        return CustomerEntity.builder()
-                .id(customer.getId())
-                .name(customer.getName())
-                .surnames(customer.getSurnames())
-                .birthDate(customer.getBirthDate())
-                .passportNumber(customer.getPassportNumber())
-                .enrollmentDate((customer.getEnrollmentDate() == null) ? LocalDate.now() : customer.getEnrollmentDate())
-                .active(customer.getActive() == null || customer.getActive())
-                .build();
+        databaseRepository.save(transformer.toEntity(customer));
     }
 
     @Override
     public Optional<Customer> getCustomerById(String id) {
         CustomerEntity customerEntity = databaseRepository.getReferenceById(id);
-        Customer customer = transform(customerEntity);
+        Customer customer = transformer.toDomain(customerEntity);
         return Optional.ofNullable(customer);
     }
 
     @Override
     public Optional<Customer> getCustomerByPassport(String id) {
         CustomerEntity customerEntity = databaseRepository.getByPassportNumber(id);
-        Customer customer = transform(customerEntity);
+        Customer customer = transformer.toDomain(customerEntity);
         return Optional.ofNullable(customer);
     }
 }

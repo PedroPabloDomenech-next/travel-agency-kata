@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 @Scope("singleton")
-@Primary // para utilizar este repositorio en lugar de CustomersInMemoryRepository.java
+@Primary
 public class CustomersInMemoryRepository implements CustomersRepository {
     private final ConcurrentHashMap<String,Customer> customersById = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String,Customer> customersByPassport = new ConcurrentHashMap<>();
