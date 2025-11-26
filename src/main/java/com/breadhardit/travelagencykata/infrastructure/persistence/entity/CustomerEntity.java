@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +15,7 @@ import java.time.LocalDate;
 @Table(name = "CUSTOMERS")
 @Data
 @Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomerEntity {
     @Id
     @Column(name = "ID")
@@ -29,4 +32,7 @@ public class CustomerEntity {
     LocalDate enrollmentDate;
     @Column(name = "ACTIVE")
     Boolean active;
+
+    public CustomerEntity() {} // Constructor vacío para JPA
 }
+
